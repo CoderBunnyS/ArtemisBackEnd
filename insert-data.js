@@ -5,7 +5,7 @@ const url = 'mongodb+srv://TrackerAdmin:TrackerAdminPassword@cluster0.euzmb.mong
 const client = new MongoClient(url);
  
  // The database to use
- const dbName = "Cluster0";
+ const dbName = "JobTracker";
                       
  async function run() {
     try {

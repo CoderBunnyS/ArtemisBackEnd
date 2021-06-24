@@ -1,18 +1,27 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-let jobSchema = new Schema({
+let JobSchema = new Schema({
+  user: {type: Schema.Types.ObjectId, ref: "User", required: true},
+
   title: {
-    type: String
+    type: String, required: true, maxLength: 100 
   },
   company: {
-    type: String
+    type: String, required: true, maxLength: 100
   },
   appliedDate: {
-    type: String
-  }
-}, {
+    type: String, required: true
+  },
+  category: [{
+    type: Schema.Types.ObjectId, ref: 'Category' }], 
     collection: 'jobs'
   })
 
-module.exports = mongoose.model('Job', jobSchema)
+  //Virtual for job URL
+  JobSchema.virtual('url')
+  .get(function() {
+    return '/job/' + this._id;
+  })
+
+module.exports = mongoose.model('Job', JobSchema)

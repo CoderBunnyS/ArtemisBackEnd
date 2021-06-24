@@ -1,21 +1,43 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-let userSchema = new Schema({
+let UserSchema = new Schema({
   firstName: {
-    type: String
+    type: String, required: true, maxLength: 100
   },
-  lasName: {
-    type: String
+  lastName: {
+    type: String, required: true, maxLength: 100
   },
   email: {
-    type: String
+    type: String, required: true, maxLength: 100, unique: true
   },
-  username: {
-      type: String
+  password: {
+    type: String, required: true, maxLength: 100
   }
 }, {
     collection: 'user'
+  });
+
+  //Virtual for full name
+  UserSchema
+  .virtual('name'
+  .length(function () {
+    return this.firstName + " " + this.lastName;
+  }));
+
+  //Virtual for user's email
+  UserSchema
+  .virtual('email')
+  .get(function () {
+    return (this.email)
   })
 
-module.exports = mongoose.model('User', userSchema)
+  //Virtual for user's URL (profile?)
+  UserSchema
+  .virtual('url')
+  .get(function() {
+    return '/user/' + this._id
+  })
+
+  //Export model
+module.exports = mongoose.model('User', UserSchema)
